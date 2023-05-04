@@ -1,5 +1,5 @@
 import pygame
-
+import random
 #-----------------------------------------------------------------------------
 pygame.display.set_caption("Bella gam the sequel")  # sets the window title
 screen = pygame.display.set_mode((800, 800))  # creates game screen
@@ -34,6 +34,7 @@ frameHeight = 50
 frameWidth = 50
 offset = 0
 frameNum = 0
+pughp = 100
 #----------------------
 #---------------------------
 
@@ -60,12 +61,11 @@ class silly:
         self.vx = 2
         self.vy = 0
         self.isOnGround = False
-    def draw(self, Bosz):
-        if Bosz == 1:
-            if self.vx > 0:
-                screen.blit(pug2, (self.cxpos, self.cypos))
-            if self.vx < 0:
-                screen.blit(pug1 (self.cxpos, self.cypos))
+    def draw(self):
+        if self.vx > 0:
+            screen.blit(pug2, (self.cxpos, self.cypos))
+        elif self.vx < 0:
+            screen.blit(pug1, (self.cxpos, self.cypos))
                 
     
     #REFLECTION
@@ -75,6 +75,17 @@ class silly:
         self.cxpos += self.vx
         self.cypos += self.vy
         
+    def gravity(self):
+
+      #GRAVITY
+            if self.cypos > 500 - 100: #check if your feet are on the ground
+                self.isOnGround = True
+                self.cypos = 500 - 100
+                self.vy = 0 #stot falling if on ground
+            else:
+                self.isOnGround = False
+            if self.isOnGround == False:
+                self.vy+=.2 #if not on ground, fall downwards
         
 #-----------------------------------------
 
@@ -103,10 +114,12 @@ map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1
 #i'm going to make 1 grass, and 2 brick for now....
 #----------------------------------------------------------------------------------------------------------
 
+bruh = silly(600, 0)
+
 #GAM LOOP!!!!-------------------------------
 while not gameover:
     clock.tick(60) #basically the fps
-    
+    ticker+=1
     for event in pygame.event.get(): #quit game if x is pressed in top corner
         if event.type == pygame.QUIT:
             gameover = True
@@ -169,6 +182,8 @@ while not gameover:
     ypos+=vy
     print(vx, vy)
     
+    bruh.gravity()
+    
     
 # collision so you dont fall through the floor like an idiot
     if map[int((ypos+frameHeight)/50)][int((xpos-offset+frameWidth/2)/50)]==1 or map[int((ypos+frameHeight)/50)][int((xpos-offset+frameWidth/2)/50)]==2:
@@ -204,6 +219,8 @@ while not gameover:
     #gravity
     if isOnGround == False:
         vy+=.2
+        
+    
 #render section-----------------------------------
     screen.fill((0,0,0)) #wipe screen so it doesn't smear
     
@@ -217,7 +234,7 @@ while not gameover:
     
     print(offset)
     screen.blit(temp, (xpos, ypos))
-    
+    bruh.draw()
     pygame.display.flip()
     
 #-----------------------------------------
