@@ -78,9 +78,9 @@ class silly:
     def gravity(self):
 
       #GRAVITY
-            if self.cypos > 500 - 100: #check if your feet are on the ground
+            if self.cypos > 800 - 100: #check if your feet are on the ground
                 self.isOnGround = True
-                self.cypos = 500 - 100
+                self.cypos = 800 - 100
                 self.vy = 0 #stot falling if on ground
             else:
                 self.isOnGround = False
