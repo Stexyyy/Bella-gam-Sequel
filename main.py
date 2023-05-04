@@ -69,7 +69,7 @@ class silly:
                 
     
     #REFLECTION
-        if self.cxpos < 0 or self.cxpos + 100 > 500:
+        if self.cxpos < 0 or self.cxpos + 100 > 800:
           self.vx *= -1
 
         self.cxpos += self.vx
@@ -86,6 +86,10 @@ class silly:
                 self.isOnGround = False
             if self.isOnGround == False:
                 self.vy+=.2 #if not on ground, fall downwards
+                
+    def death (self, pughp):
+        if pughp <= 0:
+            return True
         
 #-----------------------------------------
 
