@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 #-----------------------------------------------------------------------------
 pygame.display.set_caption("Bella gam the sequel")  # sets the window title
 screen = pygame.display.set_mode((800, 800))  # creates game screen
@@ -14,6 +15,7 @@ LEFT = 0
 RIGHT = 1
 UP = 2
 DOWN = 3
+SPACE = 4
 
 #------------------------
 
@@ -23,10 +25,14 @@ xpos = 400 #xpos of player
 ypos = 100 #ypos of player
 vx = 0 #x velocity of player
 vy = 0 #y velocity of player
+x_offset = 0
+y_offset = 0
+movingx = False
+movingy = False
 isOnGround = False
 fall = 0
 ticker = 0
-keys = [False, False, False, False] #this list holds whether each key has been pressed
+keys = [False, False, False, False, False] #this list holds whether each key has been pressed
 playerhp = 100
 direction = DOWN
 moving = False
@@ -35,6 +41,7 @@ frameWidth = 50
 offset = 0
 frameNum = 0
 pughp = 100
+
 #----------------------
 #---------------------------
 
@@ -61,11 +68,15 @@ class silly:
         self.vx = 2
         self.vy = 0
         self.isOnGround = False
+        self.alive = True
     def draw(self):
-        if self.vx > 0:
-            screen.blit(pug2, (self.cxpos, self.cypos))
-        elif self.vx < 0:
-            screen.blit(pug1, (self.cxpos, self.cypos))
+        if self.alive == True: 
+            if self.vx > 0:
+                #screen.blit(pug2, (self.cxpos, self.cypos))
+                screen.blit(pug2, (self.cxpos + x_offset, self.cypos + y_offset))
+            elif self.vx < 0:
+                #screen.blit(pug1, (self.cxpos, self.cypos))
+                screen.blit(pug1, (self.cxpos + x_offset, self.cypos + y_offset))
                 
     
     #REFLECTION
@@ -91,8 +102,41 @@ class silly:
         if pughp <= 0:
             return True
         
+        
 #-----------------------------------------
 
+
+#Fireball--------------------
+class fireball:
+    def __init__(self):
+        self.xpos = -10 #draw offscreen when not in use
+        self.ypos = -10
+        self.isAlive = False
+        self.direction = RIGHT
+    def shoot(self, x, y, dir):
+        self.xpos = x + 20
+        self.ypos = y + 20
+        self.isAlive = True
+        self.direction = dir
+    def move(self):
+        if self.direction == RIGHT:
+            self.xpos+=20
+        if self.direction == LEFT:
+            self.xpos-=20
+        if self.direction == UP:
+            self.ypos-=20
+        if self.direction == DOWN:
+            self.ypos+=20
+        #add other directions here
+    def draw(self):
+        pygame.draw.circle(screen, (250, 0, 0), (self.xpos, self.ypos), 10)
+        pygame.draw.circle(screen, (250, 250, 0), (self.xpos, self.ypos), 5)
+    def collide(self, x, y):
+        if math.sqrt((self.xpos - x) ** 2 + (self.ypos - y) ** 2) < 25: #25 is radius of fireball + radius of potato
+            print("collision!")
+            return True
+        else:
+            return False
 
 #MAP!!!!! ------------------------------------------------------------------------------------------------
 map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1],
@@ -119,6 +163,7 @@ map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1
 #----------------------------------------------------------------------------------------------------------
 
 bruh = silly(600, 0)
+ballin = fireball()
 
 #GAM LOOP!!!!-------------------------------
 while not gameover:
@@ -185,6 +230,12 @@ while not gameover:
     xpos+=vx #update player xpos
     ypos+=vy
     print(vx, vy)
+    
+    #check space for shooting
+    if keys[SPACE] == True:
+        ballin.shoot(xpos, ypos, direction)
+       
+    ballin.move()
     
     bruh.gravity()
     
