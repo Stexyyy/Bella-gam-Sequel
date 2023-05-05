@@ -71,17 +71,17 @@ class silly:
         self.alive = True
     def draw(self):
         if self.alive == True: 
-            if self.vx > 0:
-                #screen.blit(pug2, (self.cxpos, self.cypos))
-                screen.blit(pug2, (self.cxpos + x_offset, self.cypos + y_offset))
-            elif self.vx < 0:
-                #screen.blit(pug1, (self.cxpos, self.cypos))
-                screen.blit(pug1, (self.cxpos + x_offset, self.cypos + y_offset))
+            #if self.vx > 0:
+                screen.blit(pug2, (self.cxpos, self.cypos))
+                #screen.blit(pug2, (self.cxpos + x_offset, self.cypos + y_offset))
+            # self.vx < 0:
+                screen.blit(pug1, (self.cxpos, self.cypos))
+                #screen.blit(pug1, (self.cxpos + x_offset, self.cypos + y_offset))
                 
     
     #REFLECTION
-        if self.cxpos < 0 or self.cxpos + 100 > 800:
-          self.vx *= -1
+        #if self.cxpos < 0 or self.cxpos + 100 > 800:
+          #self.vx *= -1
 
         self.cxpos += self.vx
         self.cypos += self.vy
@@ -284,6 +284,8 @@ while not gameover:
         for j in range(32):
             if map[i][j]==1:
                 screen.blit(grass, (j*50+offset, i*50), (0, 0, 50, 50))
+                
+            
             if map[i][j]==2:
                 screen.blit(brick, (j*50+offset, i*50), (0, 0, 50, 50))
     
