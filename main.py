@@ -80,7 +80,7 @@ class silly:
                 
     
     #REFLECTION
-        #if self.cxpos < 0 or self.cxpos + 100 > 800:
+        #if self.cxpos -20 < 0 or self.cxpos + 20 + 100 > 800:
           #self.vx *= -1
 
         self.cxpos += self.vx
@@ -115,7 +115,6 @@ class fireball:
         self.direction = RIGHT
     def shoot(self, x, y, dir):
         self.xpos = x + 20
-        self.ypos = y + 20
         self.isAlive = True
         self.direction = dir
     def move(self):
@@ -123,20 +122,12 @@ class fireball:
             self.xpos+=20
         if self.direction == LEFT:
             self.xpos-=20
-        if self.direction == UP:
-            self.ypos-=20
-        if self.direction == DOWN:
-            self.ypos+=20
-        #add other directions here
     def draw(self):
         pygame.draw.circle(screen, (250, 0, 0), (self.xpos, self.ypos), 10)
         pygame.draw.circle(screen, (250, 250, 0), (self.xpos, self.ypos), 5)
-    def collide(self, x, y):
-        if math.sqrt((self.xpos - x) ** 2 + (self.ypos - y) ** 2) < 25: #25 is radius of fireball + radius of potato
-            print("collision!")
-            return True
-        else:
-            return False
+    #def collide(self, x, y):
+        
+ballin = fireball()        
 
 #MAP!!!!! ------------------------------------------------------------------------------------------------
 map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1],
@@ -163,7 +154,6 @@ map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1
 #----------------------------------------------------------------------------------------------------------
 
 bruh = silly(600, 0)
-ballin = fireball()
 
 #GAM LOOP!!!!-------------------------------
 while not gameover:
@@ -181,6 +171,8 @@ while not gameover:
                 keys[RIGHT]=True
             elif event.key == pygame.K_UP:
                 keys[UP]=True
+            elif event.key == pygame.K_SPACE:
+                keys[SPACE] = True
     elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 keys[LEFT]=False
@@ -188,7 +180,10 @@ while not gameover:
                 keys[RIGHT]=False
             elif event.key == pygame.K_UP:
                 keys[UP]=False
+            elif event.key == pygame.K_SPACE:
+                keys[SPACE] = False
                 
+
      #LEFT MOVEMENT
     if keys[LEFT]==True:
         if xpos > 400:
@@ -201,6 +196,7 @@ while not gameover:
         RowNum = 0
         direction = LEFT
         moving = True
+    
         
     #RIGHT MOVEMENT
     elif keys[RIGHT] == True:
@@ -219,6 +215,13 @@ while not gameover:
         vx = 0
         moving = False
         
+    
+    if keys[SPACE]==True:
+        print("shoot")
+        ballin.shoot(xpos, ypos, direction)
+        print("shoot LOL")
+        
+        
         #JUMPING
     if keys[UP] == True and isOnGround == True: #only jump when on the ground
         vy = -8
@@ -226,14 +229,13 @@ while not gameover:
         isOnGround = False
         direction = UP
         moving = True
-        
+    
     xpos+=vx #update player xpos
     ypos+=vy
     print(vx, vy)
     
     #check space for shooting
-    if keys[SPACE] == True:
-        ballin.shoot(xpos, ypos, direction)
+    
        
     ballin.move()
     
@@ -288,6 +290,9 @@ while not gameover:
             
             if map[i][j]==2:
                 screen.blit(brick, (j*50+offset, i*50), (0, 0, 50, 50))
+    
+    if ballin.isAlive == True:
+        ballin.draw()
     
     print(offset)
     screen.blit(temp, (xpos, ypos))
