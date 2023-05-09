@@ -15,7 +15,7 @@ LEFT = 0
 RIGHT = 1
 UP = 2
 DOWN = 3
-SPACE = 4
+SPACE = True
 
 #------------------------
 
@@ -32,7 +32,8 @@ movingy = False
 isOnGround = False
 fall = 0
 ticker = 0
-keys = [False, False, False, False, False] #this list holds whether each key has been pressed
+keys = [False, False, False, False] #this list holds whether each key has been pressed
+
 playerhp = 100
 direction = DOWN
 moving = False
@@ -115,6 +116,7 @@ class fireball:
         self.direction = RIGHT
     def shoot(self, x, y, dir):
         self.xpos = x + 20
+        self.ypos = y + 20
         self.isAlive = True
         self.direction = dir
     def move(self):
@@ -164,24 +166,25 @@ while not gameover:
             gameover = True
     
     
-    if event.type == pygame.KEYDOWN: #keyboard input
-            if event.key == pygame.K_LEFT:
-                keys[LEFT]=True
-            elif event.key == pygame.K_RIGHT:
-                keys[RIGHT]=True
-            elif event.key == pygame.K_UP:
-                keys[UP]=True
-            elif event.key == pygame.K_SPACE:
-                keys[SPACE] = True
-    elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                keys[LEFT]=False
-            elif event.key == pygame.K_RIGHT:
-                keys[RIGHT]=False
-            elif event.key == pygame.K_UP:
-                keys[UP]=False
-            elif event.key == pygame.K_SPACE:
-                keys[SPACE] = False
+        if event.type == pygame.KEYDOWN: #keyboard input
+                if event.key == pygame.K_LEFT:
+                    keys[LEFT]=True
+                elif event.key == pygame.K_RIGHT:
+                    keys[RIGHT]=True
+                elif event.key == pygame.K_UP:
+                    keys[UP]=True
+                elif event.key == pygame.K_SPACE:
+                      SPACE = True
+             
+        elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    keys[LEFT]=False
+                elif event.key == pygame.K_RIGHT:
+                    keys[RIGHT]=False
+                elif event.key == pygame.K_UP:
+                    keys[UP]=False
+                elif event.key == pygame.K_SPACE:
+                    SPACE = False
                 
 
      #LEFT MOVEMENT
@@ -216,7 +219,7 @@ while not gameover:
         moving = False
         
     
-    if keys[SPACE]==True:
+    if SPACE == True:
         print("shoot")
         ballin.shoot(xpos, ypos, direction)
         print("shoot LOL")
