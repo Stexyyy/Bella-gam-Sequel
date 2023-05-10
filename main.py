@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import introscene
 #-----------------------------------------------------------------------------
 pygame.display.set_caption("Bella gam the sequel")  # sets the window title
 screen = pygame.display.set_mode((800, 800))  # creates game screen
@@ -18,6 +19,12 @@ DOWN = 3
 SPACE = True
 
 #------------------------
+
+#game states
+START = 0
+CONTINUE = 1
+GAMEOVER = 2
+SHOPPING = 3
 
 #variables
 #----------------------
@@ -156,6 +163,8 @@ map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1 ,1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1
 #----------------------------------------------------------------------------------------------------------
 
 bruh = silly(600, 0)
+
+introscene.backstory()
 
 #GAM LOOP!!!!-------------------------------
 while not gameover:
